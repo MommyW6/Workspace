@@ -651,7 +651,7 @@ function Library:CreateWindow(Properties)
             TextYAlignment = Enum.TextYAlignment.Center,
             BorderSizePixel = 0,
             TextSize = 30,
-            Text = '☰'
+            Text = '≡'
         }, {
             Utility:Create('UICorner', {
                 Name = 'CloseButtonCorner',
@@ -768,7 +768,7 @@ function Library:CreateWindow(Properties)
             TextYAlignment = Enum.TextYAlignment.Center,
             BorderSizePixel = 0,
             TextSize = 30,
-            Text = '☰'
+            Text = '≡'
         }, {
             Utility:Create('UICorner', {
                 Name = 'CloseButtonCorner',
@@ -990,15 +990,55 @@ function Library:CreateWindow(Properties)
 
     -- // Main Button Callbacks
     CloseButton.MouseButton1Down:Connect(function()
-        Utility:Tween(CloseButton, {TextColor3 = Utility:Darken(Theme.PrimaryTextColor)}, 0.25)
+        if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
+            UpdateFrameSizes()
+            CommandInput:CaptureFocus()
+            if string.find(Position, 'bottom') then
+                Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, -36)}, 0.25)
+                
+                task.wait(0.25)
 
-        task.wait(0.25)
+                CommandsHolder.Visible = true
 
-        Utility:Tween(CloseButton, {TextColor3 = Theme.PrimaryTextColor}, 0.25)
+                Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
 
-        task.wait(0.25)
+                task.wait(0.25)
 
-        Utility:Destroy()
+                for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
+                    if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
+                        if Instance:IsA('Frame') then
+                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                        end
+
+                        if Utility:HasProperty(Instance, 'TextTransparency') then
+                            Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+                        end
+                    end
+                end
+            else
+                Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, 36)}, 0.25)    
+                
+                task.wait(0.25)
+
+                CommandsHolder.Visible = true
+
+                Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
+
+                task.wait(0.25)
+
+                for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
+                    if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
+                        if Instance:IsA('Frame') then
+                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                        end
+
+                        if Utility:HasProperty(Instance, 'TextTransparency') then
+                            Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+                        end
+                    end
+                end
+            end
+        end
     end)
 
     -- // Prefix
