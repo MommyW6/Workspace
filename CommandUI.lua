@@ -998,12 +998,12 @@ function Library:CreateWindow(Properties)
 
 	-- // Main Button Callbacks
 	CloseButton.MouseButton1Down:Connect(function()
-        if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
+       if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
             UpdateFrameSizes()
             CommandInput:CaptureFocus()
             if string.find(Position, 'bottom') then
                 Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, -36)}, 0.25)
-
+                
                 task.wait(0.25)
 
                 CommandsHolder.Visible = true
@@ -1015,9 +1015,7 @@ function Library:CreateWindow(Properties)
                 for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
                     if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
                         if Instance:IsA('Frame') then
-                            if Instance.Name ~= 'Seperation' and Instance.Name ~= 'UnclipTop' then
-                                Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
-                            end
+                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
                         end
 
                         if Utility:HasProperty(Instance, 'TextTransparency') then
@@ -1027,7 +1025,7 @@ function Library:CreateWindow(Properties)
                 end
             else
                 Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, 36)}, 0.25)    
-
+                
                 task.wait(0.25)
 
                 CommandsHolder.Visible = true
@@ -1041,7 +1039,6 @@ function Library:CreateWindow(Properties)
                         if Instance:IsA('Frame') then
                             if Instance.Name ~= 'Seperation' and Instance.Name ~= 'UnclipTop' then
                                 Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
-                                end
                             end
                         end
 
