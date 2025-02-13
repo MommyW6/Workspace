@@ -1003,7 +1003,7 @@ function Library:CreateWindow(Properties)
             CommandInput:CaptureFocus()
             if string.find(Position, 'bottom') then
                 Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, -36)}, 0.25)
-                
+
                 task.wait(0.25)
 
                 CommandsHolder.Visible = true
@@ -1015,7 +1015,9 @@ function Library:CreateWindow(Properties)
                 for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
                     if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
                         if Instance:IsA('Frame') then
-                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                            if Instance.Name ~= 'Seperation' and Instance.Name ~= 'UnclipTop' then
+                                Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                            end
                         end
 
                         if Utility:HasProperty(Instance, 'TextTransparency') then
@@ -1025,7 +1027,7 @@ function Library:CreateWindow(Properties)
                 end
             else
                 Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, 36)}, 0.25)    
-                
+
                 task.wait(0.25)
 
                 CommandsHolder.Visible = true
@@ -1037,7 +1039,10 @@ function Library:CreateWindow(Properties)
                 for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
                     if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
                         if Instance:IsA('Frame') then
-                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                            if Instance.Name ~= 'Seperation' and Instance.Name ~= 'UnclipTop' then
+                                Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                                end
+                            end
                         end
 
                         if Utility:HasProperty(Instance, 'TextTransparency') then
