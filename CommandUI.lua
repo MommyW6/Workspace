@@ -640,7 +640,7 @@ function Library:CreateWindow(Properties)
         })
 
         Utility:Create('ImageButton', {
-            Name = 'OpenButton',
+            Name = 'CloseButton',
             Position = UDim2.new(0, 475, 0, 4),
             Size = UDim2.new(0, 20, 0, 20),
             BackgroundColor3 = Theme.BackgroundColor,
@@ -654,7 +654,7 @@ function Library:CreateWindow(Properties)
             TextSize = 30,
         }, {
             Utility:Create('UICorner', {
-                Name = 'OpenButtonCorner',
+                Name = 'CloseButtonCorner',
                 CornerRadius = UDim.new(0, 5)
             })
         })
@@ -757,8 +757,8 @@ function Library:CreateWindow(Properties)
         })
 
         Utility:Create('ImageButton', {
-            Name = 'OpenButton',
-            Position = UDim2.new(0, 475, 0, 4),
+            Name = 'CloseButton',
+            Position = UDim2.new(0, 475, 0, 40),
             Size = UDim2.new(0, 20, 0, 20),
             BackgroundColor3 = Theme.BackgroundColor,
             TextColor3 = Theme.PrimaryTextColor,
@@ -771,7 +771,7 @@ function Library:CreateWindow(Properties)
             TextSize = 30,
         }, {
             Utility:Create('UICorner', {
-                Name = 'OpenButtonCorner',
+                Name = 'CloseButtonCorner',
                 CornerRadius = UDim.new(0, 5)
             }),
         })
@@ -872,8 +872,8 @@ function Library:CreateWindow(Properties)
                     Utility:Tween(Main.CommandInput.CommandInputStroke, {Color = Library.Theme.AccentColor}, 0.25)
                     Utility:Tween(Main.Title, {BackgroundColor3 = Library.Theme.BackgroundColor}, 0.25)
                     Utility:Tween(Main.Title, {TextColor3 = Library.Theme.PrimaryTextColor}, 0.25)
-                    Utility:Tween(Main.OpenButton, {BackgroundColor3 = Library.Theme.BackgroundColor}, 0.25)
-                    Utility:Tween(Main.OpenButton, {TextColor3 = Library.Theme.PrimaryTextColor}, 0.25)
+                    Utility:Tween(Main.CloseButton, {BackgroundColor3 = Library.Theme.BackgroundColor}, 0.25)
+                    Utility:Tween(Main.CloseButton, {TextColor3 = Library.Theme.PrimaryTextColor}, 0.25)
                     Utility:Tween(Main.CommandsHolder, {BackgroundColor3 = Library.Theme.BackgroundColor}, 0.25)
                     Utility:Tween(Main.CommandsHolder.CommandsHolderScrolling, {BackgroundColor3 = Library.Theme.BackgroundColor}, 0.25)
                     Utility:Tween(Main.CommandsHolder.CommandsHolderScrolling, {ScrollBarImageColor3 = Library.Theme.AccentColor}, 0.25)
@@ -893,7 +893,7 @@ function Library:CreateWindow(Properties)
 
     local CommandInput = Main.CommandInput
     local CommandInputStroke = CommandInput.CommandInputStroke
-    local OpenButton = Main.OpenButton
+    local CloseButton = Main.CloseButton
     local CommandsHolder = Main.CommandsHolder
     local CommandsHolderScrolling = CommandsHolder.CommandsHolderScrolling
     local CommandsHolderScrollingListLayout = CommandsHolderScrolling.CommandsHolderScrollingListLayout
@@ -918,12 +918,12 @@ function Library:CreateWindow(Properties)
 
     CommandInputStroke.Thickness = 1
 
-    OpenButton.MouseEnter:Connect(function()
-        Utility:Tween(OpenButton, {TextColor3 = Utility:Darken(Theme.PrimaryTextColor)}, 0.25)
+    CloseButton.MouseEnter:Connect(function()
+        Utility:Tween(CloseButton, {TextColor3 = Utility:Darken(Theme.PrimaryTextColor)}, 0.25)
     end)
 
-    OpenButton.MouseLeave:Connect(function()
-        Utility:Tween(OpenButton, {TextColor3 = Theme.PrimaryTextColor}, 0.25)
+    CloseButton.MouseLeave:Connect(function()
+        Utility:Tween(CloseButton, {TextColor3 = Theme.PrimaryTextColor}, 0.25)
     end)
 
     -- // Update Command Holder Sizes
@@ -988,65 +988,76 @@ function Library:CreateWindow(Properties)
     CommandsHolderScrolling.ChildAdded:Connect(UpdateFrameSizes)
     CommandsHolderScrolling.ChildRemoved:Connect(UpdateFrameSizes)
 
-    local function OpenUI()
-        if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
-            UpdateFrameSizes()
-            CommandInput:CaptureFocus()
-            
-            if string.find(Position, 'bottom') then
-                Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, -36)}, 0.25)
-    
-                task.wait(0.25)
-    
-                CommandsHolder.Visible = true
-                Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
-    
-                task.wait(0.25)
-    
-                for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
-                    if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
-                        if Instance:IsA('Frame') then
-                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+    -- // Main Button Callbacks
+    CloseButton.MouseButton1Down:Connect(function()
+        Utility:Tween(CloseButton, {TextColor3 = Utility:Darken(Theme.PrimaryTextColor)}, 0.25)
+
+        task.wait(0.25)
+
+        Utility:Tween(CloseButton, {TextColor3 = Theme.PrimaryTextColor}, 0.25)
+
+        task.wait(0.25)
+
+        Utility:Destroy()
+    end)
+
+    -- // Prefix
+    UserInputService.InputBegan:Connect(function(Input, GameProcessedEvent)
+        if not GameProcessedEvent then
+            if Input.KeyCode.Name == Library.Prefix.Name then
+                if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
+                    UpdateFrameSizes()
+                    CommandInput:CaptureFocus()
+                    if string.find(Position, 'bottom') then
+                        Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, -36)}, 0.25)
+                        
+                        task.wait(0.25)
+
+                        CommandsHolder.Visible = true
+
+                        Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
+
+                        task.wait(0.25)
+
+                        for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
+                            if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
+                                if Instance:IsA('Frame') then
+                                    Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                                end
+
+                                if Utility:HasProperty(Instance, 'TextTransparency') then
+                                    Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+                                end
+                            end
                         end
-                        if Utility:HasProperty(Instance, 'TextTransparency') then
-                            Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
-                        end
-                    end
-                end
-            else
-                Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, 36)}, 0.25)
-    
-                task.wait(0.25)
-    
-                CommandsHolder.Visible = true
-                Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
-    
-                task.wait(0.25)
-    
-                for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
-                    if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
-                        if Instance:IsA('Frame') then
-                            Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
-                        end
-                        if Utility:HasProperty(Instance, 'TextTransparency') then
-                            Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+                    else
+                        Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, 36)}, 0.25)    
+                        
+                        task.wait(0.25)
+
+                        CommandsHolder.Visible = true
+
+                        Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
+
+                        task.wait(0.25)
+
+                        for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
+                            if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
+                                if Instance:IsA('Frame') then
+                                    Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+                                end
+
+                                if Utility:HasProperty(Instance, 'TextTransparency') then
+                                    Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+                                end
+                            end
                         end
                     end
                 end
             end
         end
-    end
-    
-    OpenButton.MouseButton1Click:Connect(function()
-        OpenUI()
     end)
 
-    UserInputService.InputBegan:Connect(function(Input, GameProcessedEvent)
-        if not GameProcessedEvent and Input.KeyCode.Name == Library.Prefix.Name then
-            OpenUI()
-        end
-    end)
-    
     -- // Execute Command
     local function Execute(String)
         local Split = String:split(' ')
