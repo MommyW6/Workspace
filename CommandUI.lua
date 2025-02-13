@@ -996,7 +996,8 @@ function Library:CreateWindow(Properties)
 	CommandsHolderScrolling.ChildAdded:Connect(UpdateFrameSizes)
 	CommandsHolderScrolling.ChildRemoved:Connect(UpdateFrameSizes)
 
-    local OpenUI = function()
+	-- // Main Button Callbacks
+	CloseButton.MouseButton1Down:Connect(function()
         if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
             UpdateFrameSizes()
             CommandInput:CaptureFocus()
@@ -1051,18 +1052,67 @@ function Library:CreateWindow(Properties)
                 end
             end
         end
-    end
-
-	-- // Main Button Callbacks
-	CloseButton.MouseButton1Down:Connect(function()
-        OpenUI()
 	end)
 
 	-- // Prefix
 	UserInputService.InputBegan:Connect(function(Input, GameProcessedEvent)
-		if not GameProcessedEvent then if Input.KeyCode.Name == Library.Prefix.Name then
-            OpenUI()
-		end
+		if not GameProcessedEvent then
+			if Input.KeyCode.Name == Library.Prefix.Name then
+				if Main.Position.Y == UDim.new(1, 37) or Main.Position.Y == UDim.new(1, 36) or Main.Position.Y == UDim.new(0, -72) then
+					UpdateFrameSizes()
+					CommandInput:CaptureFocus()
+					if string.find(Position, 'bottom') then
+						Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, -36)}, 0.25)
+
+						task.wait(0.25)
+
+						CommandsHolder.Visible = true
+
+						Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
+
+						task.wait(0.25)
+
+						for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
+							if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
+								if Instance:IsA('Frame') then
+									if Instance.Name ~= 'Seperation' and Instance.Name ~= 'UnclipTop' then
+										Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+									end
+								end
+
+								if Utility:HasProperty(Instance, 'TextTransparency') then
+									Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+								end
+							end
+						end
+					else
+						Utility:Tween(Main, {Position = Main.Position + UDim2.new(0, 0, 0, 36)}, 0.25)    
+
+						task.wait(0.25)
+
+						CommandsHolder.Visible = true
+
+						Utility:Tween(CommandsHolder, {BackgroundTransparency = 0.25}, 0.25)
+
+						task.wait(0.25)
+
+						for _, Instance in next, CommandsHolderScrolling:GetDescendants() do
+							if not Instance:IsA('UIListLayout') and not Instance:IsA('TextButton') then
+								if Instance:IsA('Frame') then
+									if Instance.Name ~= 'Seperation' and Instance.Name ~= 'UnclipTop' then
+										Utility:Tween(Instance, {BackgroundTransparency = 0.25}, 0.25)
+										end
+									end
+								end
+
+								if Utility:HasProperty(Instance, 'TextTransparency') then
+									Utility:Tween(Instance, {TextTransparency = 0}, 0.25)
+								end
+							end
+						end
+					end
+				end
+			end
 	end)
 
 	-- // Execute Command
