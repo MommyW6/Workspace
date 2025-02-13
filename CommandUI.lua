@@ -639,19 +639,19 @@ function Library:CreateWindow(Properties)
             })
         })
 
-        Utility:Create('ImageButton', {
+        Utility:Create('TextButton', {
             Name = 'CloseButton',
             Position = UDim2.new(0, 475, 0, 4),
             Size = UDim2.new(0, 20, 0, 20),
             BackgroundColor3 = Theme.BackgroundColor,
             TextColor3 = Theme.PrimaryTextColor,
             AutoButtonColor = false,
-            Image = 'rbxassetid://10709798792',
             Font = Enum.Font.Gotham,
             Parent = Main,
             TextYAlignment = Enum.TextYAlignment.Center,
             BorderSizePixel = 0,
             TextSize = 30,
+            Text = '☰'
         }, {
             Utility:Create('UICorner', {
                 Name = 'CloseButtonCorner',
@@ -756,19 +756,19 @@ function Library:CreateWindow(Properties)
             })
         })
 
-        Utility:Create('ImageButton', {
+        Utility:Create('TextButton', {
             Name = 'CloseButton',
             Position = UDim2.new(0, 475, 0, 40),
             Size = UDim2.new(0, 20, 0, 20),
             BackgroundColor3 = Theme.BackgroundColor,
             TextColor3 = Theme.PrimaryTextColor,
             AutoButtonColor = false,
-            Image = 'rbxassetid://10709798792',
             Font = Enum.Font.Gotham,
             Parent = Main,
             TextYAlignment = Enum.TextYAlignment.Center,
             BorderSizePixel = 0,
             TextSize = 30,
+            Text = '☰'
         }, {
             Utility:Create('UICorner', {
                 Name = 'CloseButtonCorner',
