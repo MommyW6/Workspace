@@ -5993,32 +5993,34 @@ function Flameware:Window(Settings)
 		}
 	}
 
-    function Flameware:SetFolder(MainFolder, GameFolder, ConfigFolder, PlaceId)
+    function Flameware:SetFolder(MainFolder, GameFolder, ConfigFolder, PlaceID)
         if isStudio then return "Config system unavailable." end
-    
-        PlaceId = PlaceId and tostring(PlaceId) or nil
-    
-        local BaseFolder = MainFolder .. "/" .. GameFolder .. "/" .. ConfigFolder
-        local FinalFolder = PlaceId and (BaseFolder .. "/" .. PlaceId) or BaseFolder
-    
+        
+        local BasePath = MainFolder .. "/" .. GameFolder .. "/" .. ConfigFolder
+        
+        if PlaceID then
+            BasePath = BasePath .. "/" .. PlaceID
+        end
+        
         local Paths = {
             MainFolder,
             MainFolder .. "/" .. GameFolder,
-            BaseFolder,
-            PlaceId and FinalFolder or nil,
-            FinalFolder .. "/settings"
+            MainFolder .. "/" .. GameFolder .. "/" .. ConfigFolder,
+            BasePath,
+            BasePath .. "/settings"
         }
-    
+        
         for _, Path in ipairs(Paths) do
-            if Path and not isfolder(Path) then
+            if not isfolder(Path) then
                 makefolder(Path)
             end
         end
-    
-        Flameware.Folder = FinalFolder
-        return FinalFolder .. "/settings"
+        
+        Flameware.Folder = BasePath
+        
+        return BasePath .. "/settings"
     end
-    
+
 	function Flameware:LoadAutoLoadConfig()
 		if isStudio then return "Config system unavailable." end
 		
