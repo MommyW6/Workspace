@@ -1,4 +1,3 @@
--- // This is not intended to be modifed or used!!!
 local Flameware = {Options = {},Folder = "Flameware",GetService = function(service)
     return cloneref and cloneref(game:GetService(service)) or game:GetService(service)
 end}
@@ -71,14 +70,14 @@ function Flameware:Window(Settings)
 		acrylicBlur = true
 	end
 
-	local mommy = Instance.new("ScreenGui")
-	mommy.Name = "Flameware"
-	mommy.ResetOnSpawn = false
-	mommy.DisplayOrder = 100
-	mommy.IgnoreGuiInset = true
-	mommy.ScreenInsets = Enum.ScreenInsets.None
-	mommy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	mommy.Parent = (isStudio and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
+	local flameslol = Instance.new("ScreenGui")
+	flameslol.Name = "Flameware"
+	flameslol.ResetOnSpawn = false
+	flameslol.DisplayOrder = 100
+	flameslol.IgnoreGuiInset = true
+	flameslol.ScreenInsets = Enum.ScreenInsets.None
+	flameslol.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	flameslol.Parent = (isStudio and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
 
 	local notifications = Instance.new("Frame")
 	notifications.Name = "Notifications"
@@ -87,7 +86,7 @@ function Flameware:Window(Settings)
 	notifications.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	notifications.BorderSizePixel = 0
 	notifications.Size = UDim2.fromScale(1, 1)
-	notifications.Parent = mommy
+	notifications.Parent = flameslol
 	notifications.ZIndex = 2
 
 	local notificationsUIListLayout = Instance.new("UIListLayout")
@@ -948,7 +947,7 @@ function Flameware:Window(Settings)
 	globalSettingsUIScale.Scale = 1e-07
 	globalSettingsUIScale.Parent = globalSettings
 	globalSettings.Parent = base
-	base.Parent = mommy
+	base.Parent = flameslol
 
 	function WindowFunctions:UpdateTitle(NewTitle)
 		title.Text = NewTitle
@@ -5786,7 +5785,7 @@ function Flameware:Window(Settings)
 			onUnloadCallback()  
 		end
 		
-		mommy:Destroy();game:GetService("RunService"):Set3dRenderingEnabled(true);
+		flameslol:Destroy();game:GetService("RunService"):Set3dRenderingEnabled(true);
 		for _,v in pairs(game.Players:GetPlayers()) do
 			if v.Name ~= game.Players.LocalPlayer.Name and v.Character then
 				v.Character.Parent = game.Workspace;
@@ -6154,7 +6153,7 @@ function Flameware:Window(Settings)
 		return out
 	end
 
-	mommy.Enabled = false
+	flameslol.Enabled = false
 
 	local assetList = {}
 	for _, assetId in pairs(assets) do
@@ -6162,7 +6161,7 @@ function Flameware:Window(Settings)
 	end
 
 	ContentProvider:PreloadAsync(assetList)
-	mommy.Enabled = true
+	flameslol.Enabled = true
 	windowState = true
 
 	return WindowFunctions
